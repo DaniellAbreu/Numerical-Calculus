@@ -1,4 +1,6 @@
-program factor
+program fatoracao
+  
+  ! Fatoração LU e Eliminação Gaussiana (Algoritmos de Verificação)
 
   implicit none
 
@@ -188,4 +190,5 @@ program factor
   deallocate(b)
   deallocate(c)
   
-end program factor
+end program fatoracao
+

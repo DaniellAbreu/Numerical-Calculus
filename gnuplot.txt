@@ -1,1 +1,0 @@
-plot 'saida.dat' using 1:2 with lines title 'seno', 'saida.dat' using 1:3 with linespoints title 'cosseno' pointtype 4

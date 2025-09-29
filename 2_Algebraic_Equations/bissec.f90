@@ -6,11 +6,11 @@ program bissec
   integer :: n
   
 
-  a = 1.d0
+  a = 0.d0
   b = 6.d0
-  tol = 1.d-8
+  tol = 1.d-15
   n = 0
-  erro = 1234.d0
+  erro = 1233.d0
   
   do while (erro > tol)
      n = n + 1
@@ -34,7 +34,7 @@ contains
 
     double precision :: f, x
     
-    f = x**4.d0 - 23.d0*(x**3.d0) + 179.d0*(x**2.d0) - 517.d0*x + 360.d0
+    f = x**3.d0 - x - 1.d0
     
     return
     

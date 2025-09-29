@@ -1,5 +1,7 @@
 program iteration
-
+  
+  ! Métodos de Convergência de Pontos Fixos - Ponto Fixo, Newton-Raphson e Bisseção.
+    
   implicit none
   
   double precision, dimension (0:100) :: x
