@@ -4,32 +4,46 @@ program iteration
     
   implicit none
   
-  double precision, dimension (0:100) :: x
-  integer :: n
+  double precision, dimension (:), allocatable :: x
+  integer :: N
   
-  x(0) = 0.3d0
+  N = 100
+  
+  allocate(x(0:N))
+  
+  ! Chute Inicial
+  x(0) = 1.d0
   
   call newtonRaphson
+  call pontoFixo
+  call bissec
+  
+  deallocate(x)
   
   contains
   
   subroutine pontoFixo
 	
 	implicit none
-
+	
 	double precision :: tol
 	integer :: n
 	
-	tol = 1.0d-15
+	tol = 1.d-8
 	
 	n = 0
 	
-	do while (abs(g(x(n)) - x(n)) > tol .AND. n < size(x))
-	  
-	  write(*,*) n, x(n)
+    do while (n < size(x) - 1)
+    
       x(n + 1) = g(x(n))
-      n = n + 1
+      write(*,*) "Iteração Ponto Fixo:", n, x(n + 1)
       
+      if (abs(x(n + 1) - x(n)) < tol) then
+        write(*,*) "Convergiu para:", x(n+1)
+        exit
+      end if
+      
+      n = n + 1
     end do
 	
   end subroutine pontoFixo
@@ -41,20 +55,65 @@ program iteration
     double precision :: tol
 	integer :: n
 	
-	tol = 1.0d-15
+	tol = 1.d-8
 	
 	n = 0
     
-    do while (n < size(x))
+    do while (n < size(x) - 1)
     
-       x(n + 1) = x(n) - f(x(n))/flinha(x(n))
+      x(n + 1) = x(n) - f(x(n))/flinha(x(n))
        
-       write(*,*) n, x(n)
+      write(*,*) "Iteração Newton Raphson:", n, x(n + 1)
        
-       if (abs(x(n + 1) - x(n)) < tol) exit
-       n = n + 1
+      if (abs(x(n + 1) - x(n)) < tol) then
+        write(*,*) "Convergiu para:", x(n + 1)
+        exit
+      end if
        
+      n = n + 1
     end do
+  
+  end subroutine
+  
+  subroutine bissec
+  
+    implicit none
+    
+    double precision :: tol, erro, xmed, a, b, fmid, fa
+    integer :: n
+    
+    ! Intervalo: a > b
+    a = 0.d0
+    b = 6.d0
+    
+    n = 0
+    
+    tol = 1.d-8
+    erro = 1000.d0
+    
+    fa = f(a)
+    
+    do while (erro > tol)
+
+      xmed = (a + b)/2.d0
+      fmid = f(xmed)
+      
+      write(*,*) "Iteração Bisseção", n, xmed
+      
+      n = n + 1
+	  
+	  if (fmid*fa < 0.d0) then
+	    b = xmed
+	  else
+		a = xmed
+	    fa = fmid
+      end if
+		
+	  erro = dabs(fmid)
+	  
+    end do
+    
+    write(*,*) "Convergiu para:", xmed
   
   end subroutine
   
@@ -64,9 +123,8 @@ program iteration
 
     double precision :: g, x
     
-    !g = cos(x)**(2.0d0/3.0d0)
-    !g = (7*(x**2) + 14*x + 6)**(1.0/3.0)
-    
+    g = (x + 1)**(1.d0/3.d0)
+
     return
     
   end function g
@@ -77,7 +135,7 @@ program iteration
 
     double precision :: f,x
     
-    f = (1.0/3.0)*(x**3.d0) - 2.d0*(x**2.d0) + 3.d0*x
+    f = x**3.d0 - x - 1.d0
     
     return
     
@@ -89,7 +147,7 @@ program iteration
 
     double precision :: flinha, x 
     
-    flinha = x**2.d0 - 4.d0*x + 3
+    flinha = 3.d0*(x**2.d0) - 1.d0
     
     return
     
