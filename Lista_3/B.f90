@@ -11,7 +11,7 @@ program B
   double precision, dimension(:), allocatable :: C, X, Temp, D
   double precision :: Soma
 	
-  N = 3 ! Grau do Sistema Linear.
+  N = 4 ! Grau do Sistema Linear.
 	
   allocate(M(N,N + 1)) ! Matriz Aumentada (Matriz Quadrada + Solução).
   allocate(X(N)) ! Valores de Variáveis Solução de U.
@@ -22,20 +22,29 @@ program B
   allocate(U(N,N))
   allocate(Lambda(N,N))
 
-  M(1,1) = 2.d0
-  M(1,2) = -1.5d0
-  M(1,3) = 3.d0
-  M(1,4) = 1.d0
+  M(1,1) = acos(-1.d0)
+  M(1,2) = exp(1.d0)
+  M(1,3) = sqrt(2.d0)
+  M(1,4) = -sqrt(3.d0)
+  M(1,5) = 1.d0
   
-  M(2,1) = -1.d0
-  M(2,2) = 0.d0
-  M(2,3) = 2.d0
-  M(2,4) = 3.d0
+  M(2,1) = acos(-1.d0) ** 2
+  M(2,2) = exp(1.d0)
+  M(2,3) = -(exp(1.d0) ** 2)
+  M(2,4) = 3.d0 / 7.d0
+  M(2,5) = 1.d0
   
-  M(3,1) = 4.d0
-  M(3,2) = -4.5d0
-  M(3,3) = 5.d0
-  M(3,4) = 1.d0
+  M(3,1) = sqrt(5.d0)
+  M(3,2) = -sqrt(6.d0)
+  M(3,3) = 1.d0
+  M(3,4) = -sqrt(2.d0)
+  M(3,5) = 1.d0
+  
+  M(4,1) = acos(-1.d0) ** 3
+  M(4,2) = exp(1.d0) ** 2
+  M(4,3) = -sqrt(7.d0)
+  M(4,4) = 1.d0 / 9.d0
+  M(4,5) = 1.d0
   
   ! Formato Inicial da Matriz L - Fatoração LU.
   Lambda = 0.d0
@@ -126,6 +135,18 @@ program B
   do i = 1, N
 		write(*,*) i, X(i)
   end do
+	
+	! Rotina de Verificação.
+	Soma = 0.d0
+	do i = 1, N
+		Soma = Soma + M(1,i) * X(i)
+	end do
+	
+	if (Soma == M(1, N + 1)) then
+		write(*,*) 'Solução Verificada com Sucesso! :)'
+	else
+		write(*,*) 'Solução Incorreta :(', Soma, M(1, N + 1)
+	end if
 	
 	deallocate(M)
 	deallocate(X)
