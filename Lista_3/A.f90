@@ -1,7 +1,7 @@
 program A
   
   ! Solução de Sistemas Algébricos Lineares - Processos Iterativos Matriciais.
-  ! Eliminação Gaussiana; Pivoteamento; Substituição Reversa e Rotina de Verificação.
+  ! Eliminação Gaussiana; Pivoteamento Simples; Substituição Reversa e Rotina de Verificação.
   
   implicit none
 	
@@ -30,13 +30,13 @@ program A
   M(3,3) = 5.d0
   M(3,4) = 1.d0
 	
-	write(*,*) 'Antes do Escalonamento'
+	write(*,*) 'Antes do Escalonamento - Matriz Base'
   do i = 1, N
     write(*,*) (M(i,j),j = 1, N + 1)
   end do
 	
 	do j = 1, N ! Percorre Colunas.
-		if (M(j,j) == 0) then ! Método do Pivoteamento.
+		if (M(j,j) == 0) then ! Método do Pivoteamento Simples.
 			do k = j + 1, N
 				if (M(k,j) /= 0) then
 					allocate(Temp(N + 1))
@@ -47,7 +47,7 @@ program A
 					end do
 					deallocate(Temp)
 				else
-					write(*,*) 'Problema! A Matriz é Singular!' ! Determinante(M) = 0 / Não é Invertível.
+					write(*,*) 'Problema! A Matriz é Singular!' ! Determinante(M) = 0 - Não é Invertível.
 					stop
 				end if
 			end do
@@ -64,7 +64,7 @@ program A
 
 	write(*,*) 'Depois do Escalonamento - Upper Triangular'
   do i = 1, N
-    write(*,*) (M(i,j),j = 1, N + 1)
+    write(*,*) (M(i,j), j = 1, N + 1)
   end do
   
   ! Algorítmo de Substituição Reversa.
@@ -74,7 +74,7 @@ program A
 		do k = i + 1, N
 			Soma = Soma + M(i,k) * Var(k) ! Soma das Variáveis Resolvidas.
 		end do
-		Var(i) = (M(i, N + 1) - Soma)/M(i,i) ! Solução da Variável Atual.
+		Var(i) = (M(i, N + 1) - Soma) / M(i,i) ! Solução da Variável Atual.
   end do
   
   write(*,*) 'Solução do Sistema Linear'
