@@ -85,7 +85,7 @@ program Matr_iter
   
   
   ! Notação: x = (x(1), x(2), x(3)) = (x, y, z).
-	! Processo Iterativo de Gauss-Jacobi = x(n + 1) = [D ** (-1)] * [b - (L + U) * x(n)].
+  ! Processo Iterativo de Gauss-Jacobi = x(n + 1) = [D ** (-1)] * [b - (L + U) * x(n)].
 	! Processo Iterativo de Gauss-Siedel = x(n + 1) = [(D + L) ** (-1)] * [b - U * x(n)].
 	! Gauss-Siedel = Atualiza a Variável a Partir da Melhor Estimativa Encontrada.
 	
